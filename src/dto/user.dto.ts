@@ -1,5 +1,4 @@
-import { Type } from "class-transformer";
-import { ArrayMinSize, IsDateString, IsEmail, IsMongoId, IsNotEmpty, IsNotEmptyObject, IsString, Length, Min, ValidateNested } from "class-validator";
+import { IsDateString, IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
 
 export class UserDto {
     // @IsMongoId()

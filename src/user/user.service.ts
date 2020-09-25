@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserDto } from 'src/dto/user.dto';
 import { InsertResult, Repository } from 'typeorm';
-import { ObjectID } from 'mongodb';
 import { User } from './user.entity';
 
 @Injectable()
