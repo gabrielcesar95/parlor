@@ -40,5 +40,5 @@ services:
     volumes:
       - pgdata
 networks:
-    webnet:
-        driver: bridge
+  webnet:
+    driver: bridge

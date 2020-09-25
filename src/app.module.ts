@@ -1,10 +1,25 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './user/user.entity';
 import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [UserModule],
-  controllers: [AppController],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mongodb',
+      host: 'localhost',
+      port: 27017,
+      username: '',
+      password: '',
+      database: 'test',
+      entities: [
+        User,
+      ],
+      synchronize: true,
+    }),
+    UserModule
+  ],
+  controllers: [],
   providers: [],
 })
 export class AppModule { }

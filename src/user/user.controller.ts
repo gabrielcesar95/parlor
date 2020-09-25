@@ -1,29 +1,35 @@
-import { Controller, Delete, Get, HttpException, NotAcceptableException, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { InsertResult } from 'typeorm';
+import { UserDto } from '../dto/user.dto';
+import { User } from './user.entity';
+import { UserService } from './user.service';
 
 @Controller('users')
 export class UserController {
+    constructor(private userService: UserService) { }
+
     @Get()
-    UsersList(): string {
-        return 'listagem de usuários';
+    List(): Promise<User[]> {
+        return this.userService.findAll();
     }
 
     @Post()
-    CreateUser(): string {
-        return 'criar usuário';
+    Create(@Body() user: UserDto): Promise<InsertResult> {
+        return this.userService.create(user);
     }
 
     @Get(':id')
-    GetUser(@Param('id', ParseIntPipe) id: number ): number {
-        return id;
+    Find(@Param('id') id: string) {
+        return this.userService.find(id);
     }
-    
-    @Post(':id')
-    UpdateUser(@Param() params): string {
-        return `adquirir usuário ID: ${params.id}`;
+
+    @Put(':id')
+    Update(@Param('id') id: string, @Body() user: UserDto) {
+        return this.userService.update(id, user);
     }
-    
+
     @Delete(':id')
-    DeleteUser(@Param() params): string {
-        return `adquirir usuário ID: ${params.id}`;
+    Delete(@Param('id') id: string) {
+        return this.userService.delete(id);
     }
 }
