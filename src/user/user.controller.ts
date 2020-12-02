@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Param, Post, Put } from '@nestjs/common';
 import { InsertResult } from 'typeorm';
 import { UserDto } from '../dto/user.dto';
 import { User } from './user.entity';
@@ -14,7 +14,13 @@ export class UserController {
     }
 
     @Post()
-    Create(@Body() user: UserDto): Promise<InsertResult> {
+    async Create(@Body() user: UserDto): Promise<UserDto> {
+        console.log(await this.userService.findByEmail(user.email))
+
+        if (await this.userService.findByEmail(user.email)) {
+            throw new HttpException({ message: ['E-mail already used'] }, 400);
+        }
+
         return this.userService.create(user);
     }
 

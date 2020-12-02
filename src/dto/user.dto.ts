@@ -1,8 +1,9 @@
 import { IsDateString, IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
+import { ObjectID } from "typeorm";
 
 export class UserDto {
     // @IsMongoId()
-    readonly id?: string;
+    readonly id?: ObjectID;
 
     @IsNotEmpty()
     @IsString()
