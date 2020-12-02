@@ -2,23 +2,22 @@ import { IsDateString, IsEmail, IsNotEmpty, IsString, Length } from "class-valid
 import { ObjectID } from "typeorm";
 
 export class UserDto {
-    // @IsMongoId()
     readonly id?: ObjectID;
 
     @IsNotEmpty()
     @IsString()
     @Length(2, 255, { message: "O tamanho de nome deve ser entre 2 e 255" })
-    readonly name: string;
+    name: string;
 
     @IsNotEmpty()
     @IsEmail()
     @Length(3, 255)
-    readonly email: string;
+    email: string;
 
     @IsNotEmpty()
     @IsDateString()
-    readonly birthDate: Date;
+    birthDate: Date;
 
     @IsNotEmpty()
-    readonly password: string;
+    password: string;
 }
