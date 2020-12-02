@@ -16,7 +16,7 @@ export class UserService {
         return this.userRepository.find();
     }
 
-    create(user: UserDto): Promise<UserDto> {
+    create(user: UserDto): Promise<User> {
         return this.userRepository.save(user);
     }
 
@@ -28,8 +28,9 @@ export class UserService {
         return this.userRepository.findOne({ where: { email: email } })
     }
 
-    update(id: string, user: UserDto) {
-        return this.userRepository.update(id, user);
+    async update(id: string, user: UserDto): Promise<User> {
+        await this.userRepository.update(id, user);
+        return await this.userRepository.findOne(id);
     }
 
     delete(id: string) {

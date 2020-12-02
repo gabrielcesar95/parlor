@@ -14,7 +14,7 @@ export class UserController {
     }
 
     @Post()
-    async Create(@Body() user: UserDto): Promise<UserDto> {
+    async Create(@Body() user: UserDto): Promise<User> {
         console.log(await this.userService.findByEmail(user.email))
 
         if (await this.userService.findByEmail(user.email)) {
@@ -25,12 +25,12 @@ export class UserController {
     }
 
     @Get(':id')
-    Find(@Param('id') id: string) {
+    Find(@Param('id') id: string): Promise<User> {
         return this.userService.find(id);
     }
 
     @Put(':id')
-    Update(@Param('id') id: string, @Body() user: UserDto) {
+    Update(@Param('id') id: string, @Body() user: UserDto): Promise<User> {
         return this.userService.update(id, user);
     }
 
