@@ -1,5 +1,5 @@
 import { BadRequestException, NotFoundException, Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
-import { IdPipe } from 'src/pipes/id.pipe'
+import { IdPipe } from '../pipes/id.pipe'
 import { UserCreateDto } from './dto/create-user.dto'
 import { UserUpdateDto } from './dto/update-user.dto'
 import { User } from './entities/user.entity'
