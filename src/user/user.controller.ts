@@ -1,4 +1,5 @@
 import { BadRequestException, NotFoundException, Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
+import { Public } from 'src/decorators/public.decorator'
 import { UserCreateDto, UserUpdateDto } from '../dto/user.dto'
 import { User } from './user.entity'
 import { UserService } from './user.service'
@@ -8,7 +9,6 @@ export class UserController {
     constructor(private userService: UserService) { }
 
     // TODO: create a decorator for all the "const { password, ...response } = user" instructions
-
     @Get()
     async List(): Promise<User[]> {
         const users = await this.userService.findAll()
