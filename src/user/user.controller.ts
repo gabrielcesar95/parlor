@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Post, Put } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { UserCreateDto, UserUpdateDto } from '../dto/user.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
@@ -14,10 +14,8 @@ export class UserController {
 
     @Post()
     async Create(@Body() user: UserCreateDto): Promise<User> {
-        console.log(await this.userService.findByEmail(user.email))
-
         if (await this.userService.findByEmail(user.email)) {
-            throw new HttpException({ message: ['E-mail already used'] }, 400);
+            throw new BadRequestException({ statusCode: 400, message: ['E-mail already used'], error: 'Bad Request' });
         }
 
         return this.userService.create(user);
