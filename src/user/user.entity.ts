@@ -1,5 +1,6 @@
 import { Column, Entity, ObjectID, ObjectIdColumn } from "typeorm"
 
+//TODO: change collection name to "users"
 @Entity()
 export class User {
     @ObjectIdColumn()
