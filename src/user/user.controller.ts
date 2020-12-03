@@ -1,4 +1,5 @@
 import { BadRequestException, NotFoundException, Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
+import { IdPipe } from 'src/pipes/id.pipe'
 import { UserCreateDto, UserUpdateDto } from '../dto/user.dto'
 import { User } from './user.entity'
 import { UserService } from './user.service'
@@ -34,7 +35,7 @@ export class UserController {
     }
 
     @Get(':id')
-    async Find(@Param('id') id: string): Promise<User> {
+    async Find(@Param('id', IdPipe) id: string): Promise<User> {
         const user = await this.userService.find(id)
 
         if (user) {
@@ -47,7 +48,7 @@ export class UserController {
     }
 
     @Put(':id')
-    async Update(@Param('id') id: string, @Body() user: UserUpdateDto): Promise<User> {
+    async Update(@Param('id', IdPipe) id: string, @Body() user: UserUpdateDto): Promise<User> {
         if (await this.userService.find(id)) {
             const updatedUser = await this.userService.update(id, user)
 
@@ -60,7 +61,7 @@ export class UserController {
     }
 
     @Delete(':id')
-    async Delete(@Param('id') id: string) {
+    async Delete(@Param('id', IdPipe) id: string) {
         if (await this.userService.find(id)) {
             return await this.userService.delete(id)
         }
