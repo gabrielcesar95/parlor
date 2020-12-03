@@ -2,39 +2,38 @@ import { IsDateString, IsEmail, IsNotEmpty, IsString, Length } from "class-valid
 import { ObjectID } from "typeorm"
 
 export class UserCreateDto {
-    readonly id?: ObjectID;
+    readonly id?: ObjectID
 
     @IsNotEmpty()
     @IsString()
     @Length(2, 255)
-    name: string;
+    name: string
 
     @IsNotEmpty()
     @IsEmail()
     @Length(3, 255)
-    email: string;
+    email: string
 
-    @IsNotEmpty()
     @IsDateString()
-    birthDate: Date;
+    birthDate: Date
 
     @IsNotEmpty()
-    password: string;
+    password: string
 }
 
 export class UserUpdateDto {
-    readonly id?: ObjectID;
+    readonly id?: ObjectID
 
     @IsString()
     @Length(2, 255)
-    name: string;
+    name: string
 
     @IsEmail()
     @Length(3, 255)
-    email: string;
+    email: string
 
     @IsDateString()
-    birthDate: Date;
+    birthDate: Date
 
-    password?: string;
+    password?: string
 }
