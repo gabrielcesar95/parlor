@@ -12,16 +12,8 @@ export class UserService {
         private userRepository: Repository<User>,
     ) { }
 
-    // TODO: create a decorator for all the "delete user.password" instructions
-
     async findAll(): Promise<User[]> {
         const users = await this.userRepository.find()
-
-        users.map((user: User) => {
-            delete user.password
-
-            return user
-        })
 
         return users
     }
@@ -34,33 +26,15 @@ export class UserService {
             password: hashedPassword
         }
 
-        const user = await this.userRepository.save(createdUser)
-
-        if (user) {
-            delete user.password
-        }
-
-        return user
+        return await this.userRepository.save(createdUser)
     }
 
     async find(id: string): Promise<User> {
-        const user = await this.userRepository.findOne(id)
-
-        if (user) {
-            delete user.password
-        }
-
-        return user
+        return await this.userRepository.findOne(id)
     }
 
     async findByEmail(email: string): Promise<User> {
-        const user = await this.userRepository.findOne({ where: { email: email } })
-
-        if (user) {
-            delete user.password
-        }
-
-        return user
+        return await this.userRepository.findOne({ where: { email: email } })
     }
 
     async update(id: string, updatedUser: UserUpdateDto): Promise<User> {
@@ -74,21 +48,12 @@ export class UserService {
             }
         }
 
-
         await this.userRepository.update(id, updatedUser)
-        const user = await this.userRepository.findOne(id)
-
-        if (user) {
-            delete user.password
-        }
-
-        return user
+        return await this.userRepository.findOne(id)
     }
 
     async delete(id: string) {
         const deleteAttempt = await this.userRepository.delete(id)
-
-        console.log(deleteAttempt)
 
         return deleteAttempt
     }

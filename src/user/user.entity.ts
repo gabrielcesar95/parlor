@@ -11,9 +11,9 @@ export class User {
     @Column({ unique: true })
     email: string
 
-    @Column()
-    birthDate: Date
+    @Column({ nullable: true })
+    birthDate?: Date
 
-    @Column()
-    password: string
+    @Column({ nullable: true })
+    password?: string
 }

@@ -7,9 +7,19 @@ import { UserService } from './user.service'
 export class UserController {
     constructor(private userService: UserService) { }
 
+    // TODO: create a decorator for all the "const { password, ...response } = user" instructions
+
     @Get()
-    List(): Promise<User[]> {
-        return this.userService.findAll()
+    async List(): Promise<User[]> {
+        const users = await this.userService.findAll()
+
+        const response = users.map((user: User) => {
+            const { password, ...result } = user
+
+            return result
+        })
+
+        return response
     }
 
     @Post()
@@ -18,7 +28,11 @@ export class UserController {
             throw new BadRequestException({ statusCode: 400, message: ['E-mail already used'], error: 'Bad Request' })
         }
 
-        return this.userService.create(user)
+        const createdUser = await this.userService.create(user)
+
+        const { password, ...response } = createdUser
+
+        return response
     }
 
     @Get(':id')
@@ -26,7 +40,9 @@ export class UserController {
         const user = await this.userService.find(id)
 
         if (user) {
-            return user
+            const { password, ...response } = user
+
+            return response
         }
 
         throw new NotFoundException()
@@ -35,7 +51,11 @@ export class UserController {
     @Put(':id')
     async Update(@Param('id') id: string, @Body() user: UserUpdateDto): Promise<User> {
         if (await this.userService.find(id)) {
-            return this.userService.update(id, user)
+            const updatedUser = await this.userService.update(id, user)
+
+            const { password, ...response } = updatedUser
+
+            return response
         }
 
         throw new NotFoundException()
