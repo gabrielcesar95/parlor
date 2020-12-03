@@ -8,6 +8,14 @@ import { Public } from './decorators/public.decorator'
 export class AppController {
     constructor(private authService: AuthService) { }
 
+    // TODO: Register endpoint
+
+    @Public()
+    @Get('healthcheck')
+    healthCheck(): any {
+        return { message: 'nothing but clear skyes up ahead' }
+    }
+
     @Public()
     @UseGuards(LocalAuthGuard)
     @Post('auth/login')
