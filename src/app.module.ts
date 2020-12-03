@@ -6,7 +6,7 @@ import { AuthModule } from './auth/auth.module'
 import { AppController } from './app.controller'
 import { APP_GUARD } from '@nestjs/core'
 import { JwtAuthGuard } from './auth/jwt-auth.guard'
-import { MovementModule } from './movement/movement.module';
+import { MovementModule } from './movement/movement.module'
 
 @Module({
   imports: [
@@ -21,6 +21,7 @@ import { MovementModule } from './movement/movement.module';
         User,
       ],
       synchronize: true,
+      useUnifiedTopology: true
     }),
     UserModule,
     AuthModule,
