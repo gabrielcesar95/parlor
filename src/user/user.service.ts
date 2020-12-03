@@ -85,8 +85,12 @@ export class UserService {
         return user;
     }
 
-    delete(id: string) {
-        this.userRepository.delete(id);
+    async delete(id: string) {
+        const deleteAttempt = await this.userRepository.delete(id);
+
+        console.log(deleteAttempt)
+
+        return deleteAttempt;
     }
 
 }

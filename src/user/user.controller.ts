@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { BadRequestException, NotFoundException, Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { UserCreateDto, UserUpdateDto } from '../dto/user.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
@@ -22,17 +22,31 @@ export class UserController {
     }
 
     @Get(':id')
-    Find(@Param('id') id: string): Promise<User> {
-        return this.userService.find(id);
+    async Find(@Param('id') id: string): Promise<User> {
+        const user = await this.userService.find(id);
+
+        if (user) {
+            return user;
+        }
+
+        throw new NotFoundException();
     }
 
     @Put(':id')
-    Update(@Param('id') id: string, @Body() user: UserUpdateDto): Promise<User> {
-        return this.userService.update(id, user);
+    async Update(@Param('id') id: string, @Body() user: UserUpdateDto): Promise<User> {
+        if (await this.userService.find(id)) {
+            return this.userService.update(id, user);
+        }
+
+        throw new NotFoundException();
     }
 
     @Delete(':id')
-    Delete(@Param('id') id: string) {
-        return this.userService.delete(id);
+    async Delete(@Param('id') id: string) {
+        if (await this.userService.find(id)) {
+            return await this.userService.delete(id);
+        }
+
+        throw new NotFoundException();
     }
 }
