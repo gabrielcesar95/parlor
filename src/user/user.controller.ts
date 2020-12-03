@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpException, Param, Post, Put } from '@nestjs/common';
-import { UserDto } from '../dto/user.dto';
+import { UserCreateDto, UserUpdateDto } from '../dto/user.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
@@ -13,7 +13,7 @@ export class UserController {
     }
 
     @Post()
-    async Create(@Body() user: UserDto): Promise<User> {
+    async Create(@Body() user: UserCreateDto): Promise<User> {
         console.log(await this.userService.findByEmail(user.email))
 
         if (await this.userService.findByEmail(user.email)) {
@@ -29,7 +29,7 @@ export class UserController {
     }
 
     @Put(':id')
-    Update(@Param('id') id: string, @Body() user: UserDto): Promise<User> {
+    Update(@Param('id') id: string, @Body() user: UserUpdateDto): Promise<User> {
         return this.userService.update(id, user);
     }
 
