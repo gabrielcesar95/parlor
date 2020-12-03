@@ -1,5 +1,5 @@
-import { IsDateString, IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
-import { ObjectID } from "typeorm";
+import { IsDateString, IsEmail, IsNotEmpty, IsString, Length } from "class-validator"
+import { ObjectID } from "typeorm"
 
 export class UserCreateDto {
     readonly id?: ObjectID;

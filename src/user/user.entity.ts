@@ -1,19 +1,19 @@
-import { Column, Entity, ObjectID, ObjectIdColumn, Unique } from "typeorm";
+import { Column, Entity, ObjectID, ObjectIdColumn } from "typeorm"
 
 @Entity()
 export class User {
     @ObjectIdColumn()
-    id: ObjectID;
+    id: ObjectID
 
     @Column()
-    name: string;
+    name: string
 
     @Column({ unique: true })
-    email: string;
+    email: string
 
     @Column()
-    birthDate: Date;
+    birthDate: Date
 
     @Column()
-    password: string;
+    password: string
 }

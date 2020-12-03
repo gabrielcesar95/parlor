@@ -23,6 +23,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     camelcase: [1],
     'arrow-parens': [2, 'always'],
-    "generator-star-spacing": ["error", { "before": false, "after": true }]
+    "generator-star-spacing": ["error", { "before": false, "after": true }],
+    "semi": ["error", "never"]
   },
 };
