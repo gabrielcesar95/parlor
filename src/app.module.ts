@@ -2,6 +2,10 @@ import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { User } from './user/user.entity'
 import { UserModule } from './user/user.module'
+import { AuthModule } from './auth/auth.module'
+import { AppController } from './app.controller'
+import { APP_GUARD } from '@nestjs/core'
+import { JwtAuthGuard } from './auth/jwt-auth.guard'
 
 @Module({
   imports: [
@@ -17,9 +21,13 @@ import { UserModule } from './user/user.module'
       ],
       synchronize: true,
     }),
-    UserModule
+    UserModule,
+    AuthModule
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AppController],
+  providers: [{
+    provide: APP_GUARD,
+    useClass: JwtAuthGuard
+  }],
 })
 export class AppModule { }
