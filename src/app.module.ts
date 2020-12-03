@@ -15,7 +15,7 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard'
       port: 27017,
       username: '',
       password: '',
-      database: 'test',
+      database: 'parlor',
       entities: [
         User,
       ],
