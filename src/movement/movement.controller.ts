@@ -1,14 +1,14 @@
 import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common'
 import { MovementService } from './movement.service'
-import { CreateMovementDto } from './dto/create-movement.dto'
-import { UpdateMovementDto } from './dto/update-movement.dto'
+import { MovementCreateDto } from './dto/create-movement.dto'
+import { MovementUpdateDto } from './dto/update-movement.dto'
 
 @Controller('movement')
 export class MovementController {
   constructor(private readonly movementService: MovementService) { }
 
   @Post()
-  create(@Body() createMovementDto: CreateMovementDto) {
+  create(@Body() createMovementDto: MovementCreateDto) {
     return this.movementService.create(createMovementDto)
   }
 
@@ -23,7 +23,7 @@ export class MovementController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateMovementDto: UpdateMovementDto) {
+  update(@Param('id') id: string, @Body() updateMovementDto: MovementUpdateDto) {
     return this.movementService.update(+id, updateMovementDto)
   }
 
