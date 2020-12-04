@@ -1,8 +1,8 @@
 import { Controller, Post, UseGuards, Request, Body, BadRequestException } from '@nestjs/common'
-import { Public } from 'src/decorators/public.decorator'
-import { UserCreateDto } from 'src/user/dto/create-user.dto'
-import { User } from 'src/user/entities/user.entity'
-import { UserService } from 'src/user/user.service'
+import { Public } from '../decorators/public.decorator'
+import { UserCreateDto } from '../user/dto/create-user.dto'
+import { User } from '../user/entities/user.entity'
+import { UserService } from '../user/user.service'
 import { AuthService } from './auth.service'
 import { LocalAuthGuard } from './local-auth.guard'
 

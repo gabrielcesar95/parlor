@@ -1,34 +1,33 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common'
 import { MovementService } from './movement.service'
 import { MovementCreateDto } from './dto/create-movement.dto'
-import { MovementUpdateDto } from './dto/update-movement.dto'
+import { Movement } from './entities/movement.entity'
 
-@Controller('movement')
+@Controller('movements')
 export class MovementController {
   constructor(private readonly movementService: MovementService) { }
 
   @Post()
-  create(@Body() createMovementDto: MovementCreateDto) {
-    return this.movementService.create(createMovementDto)
+  async Create(@Body() movement: MovementCreateDto): Promise<Movement> {
+    const createdMovement = await this.movementService.create(movement)
+
+    return createdMovement
   }
 
   @Get()
-  findAll() {
-    return this.movementService.findAll()
+  async List(): Promise<Movement[]> {
+    const movements = await this.movementService.findAll()
+
+    return movements
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  FindOne(@Param('id') id: string) {
     return this.movementService.findOne(+id)
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateMovementDto: MovementUpdateDto) {
-    return this.movementService.update(+id, updateMovementDto)
-  }
-
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  Remove(@Param('id') id: string) {
     return this.movementService.remove(+id)
   }
 }

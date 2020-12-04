@@ -7,6 +7,7 @@ import { AppController } from './app.controller'
 import { APP_GUARD } from '@nestjs/core'
 import { JwtAuthGuard } from './auth/jwt-auth.guard'
 import { MovementModule } from './movement/movement.module'
+import { Movement } from './movement/entities/movement.entity'
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { MovementModule } from './movement/movement.module'
       database: 'parlor',
       entities: [
         User,
+        Movement
       ],
       synchronize: true,
       useUnifiedTopology: true
