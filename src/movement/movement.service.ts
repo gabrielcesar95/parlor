@@ -7,7 +7,7 @@ import { ObjectID } from "typeorm"
 
 @Injectable()
 export class MovementService {
-
+  // TODO priority one: implement mongoose 
   // TODO: Find a way to create a CURRENT_TIMESTAMP() equivalent on mongoDB
   // TODO: find a way to relate documents on mongoDB. In this case, movements and users
 
