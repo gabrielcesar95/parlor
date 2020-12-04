@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common'
+import { Controller, Request, Get, Post, Body, Param, Delete } from '@nestjs/common'
 import { MovementService } from './movement.service'
 import { MovementCreateDto } from './dto/create-movement.dto'
 import { Movement } from './entities/movement.entity'
+
 
 @Controller('movements')
 export class MovementController {
@@ -15,8 +16,8 @@ export class MovementController {
   }
 
   @Get()
-  async List(): Promise<Movement[]> {
-    const movements = await this.movementService.findAll()
+  async List(@Request() req): Promise<Movement[]> {
+    const movements = await this.movementService.findAll(req.user.id)
 
     return movements
   }

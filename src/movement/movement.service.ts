@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { MovementCreateDto } from './dto/create-movement.dto'
 import { Movement } from './entities/movement.entity'
+import { ObjectID } from "typeorm"
 
 @Injectable()
 export class MovementService {
@@ -20,7 +21,9 @@ export class MovementService {
     return await this.movementRepository.save(createdMovement)
   }
 
-  async findAll(): Promise<Movement[]> {
+  // TODO: see about getting the user with a decorator
+  async findAll(userId?: ObjectID): Promise<Movement[]> {
+    // TODO: get only the movements for the current authenticated user (@Request() req.user)
     const movements = await this.movementRepository.find()
 
     return movements
