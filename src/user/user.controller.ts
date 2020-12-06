@@ -2,15 +2,17 @@ import { BadRequestException, NotFoundException, Body, Controller, Delete, Get, 
 import { IdPipe } from '../pipes/id.pipe'
 import { UserCreateDto } from './dto/create-user.dto'
 import { UserUpdateDto } from './dto/update-user.dto'
-import { User } from './entities/user.entity'
+import { User } from './interfaces/user.interface'
 import { UserService } from './user.service'
+import { Public } from '../decorators/public.decorator'
 
+@Public()
 @Controller('users')
 export class UserController {
     constructor(private userService: UserService) { }
 
     @Get()
-    async List(): Promise<User[]> {
+    async List(): Promise<any[]> {
         const users = await this.userService.findAll()
 
         const response = users.map((user: User) => {
@@ -30,13 +32,11 @@ export class UserController {
 
         const createdUser = await this.userService.create(user)
 
-        const { password, ...response } = createdUser
-
-        return response
+        return createdUser
     }
 
     @Get(':id')
-    async Find(@Param('id', IdPipe) id: string): Promise<User> {
+    async Find(@Param('id', IdPipe) id: string): Promise<any> {
         const user = await this.userService.find(id)
 
         if (user) {
@@ -49,13 +49,13 @@ export class UserController {
     }
 
     @Put(':id')
-    async Update(@Param('id', IdPipe) id: string, @Body() user: UserUpdateDto): Promise<User> {
+    async Update(@Param('id', IdPipe) id: string, @Body() user: UserUpdateDto): Promise<any> {
         if (await this.userService.find(id)) {
-            const updatedUser = await this.userService.update(id, user)
+            const updatedUser = (await this.userService.update(id, user)).toObject()
 
             const { password, ...response } = updatedUser
 
-            return response
+            return updatedUser
         }
 
         throw new NotFoundException()

@@ -1,8 +1,7 @@
-import { IsDateString, IsEmail, IsNotEmpty, IsString, Length } from "class-validator"
-import { ObjectID } from "typeorm"
+import { IsEmail, IsISO8601, IsNotEmpty, IsOptional, IsString, Length } from "class-validator"
 
 export class UserCreateDto {
-    readonly id?: ObjectID
+    readonly id?: string
 
     @IsNotEmpty()
     @IsString()
@@ -14,8 +13,9 @@ export class UserCreateDto {
     @Length(3, 255)
     email: string
 
-    @IsDateString()
-    birthDate: Date
+    @IsISO8601({ strict: true })
+    @IsOptional()
+    readonly birthDate?: Date
 
     @IsNotEmpty()
     password: string

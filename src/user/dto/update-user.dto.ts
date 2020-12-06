@@ -1,8 +1,7 @@
-import { IsDateString, IsEmail, IsNotEmpty, IsString, Length } from "class-validator"
-import { ObjectID } from "typeorm"
+import { IsEmail, IsISO8601, IsOptional, IsString, Length } from "class-validator"
 
 export class UserUpdateDto {
-    readonly id?: ObjectID
+    readonly id?: string
 
     @IsString()
     @Length(2, 255)
@@ -12,8 +11,9 @@ export class UserUpdateDto {
     @Length(3, 255)
     email: string
 
-    @IsDateString()
-    birthDate: Date
+    @IsISO8601({ strict: true })
+    @IsOptional()
+    readonly birthDate?: Date
 
     password?: string
 }

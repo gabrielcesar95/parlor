@@ -1,7 +1,6 @@
 import { Controller, Post, UseGuards, Request, Body, BadRequestException } from '@nestjs/common'
 import { Public } from '../decorators/public.decorator'
 import { UserCreateDto } from '../user/dto/create-user.dto'
-import { User } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
 import { AuthService } from './auth.service'
 import { LocalAuthGuard } from './local-auth.guard'
@@ -15,7 +14,7 @@ export class AuthController {
 
     @Public()
     @Post('register')
-    async register(@Body() user: UserCreateDto): Promise<User> {
+    async register(@Body() user: UserCreateDto): Promise<any> {
         if (await this.userService.findByEmail(user.email)) {
             throw new BadRequestException({ statusCode: 400, message: ['E-mail already used'], error: 'Bad Request' })
         }

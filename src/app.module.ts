@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { User } from './user/entities/user.entity'
 import { UserModule } from './user/user.module'
 import { AuthModule } from './auth/auth.module'
 import { AppController } from './app.controller'
@@ -19,7 +18,6 @@ import { Movement } from './movement/entities/movement.entity'
       password: '',
       database: 'parlor',
       entities: [
-        User,
         Movement
       ],
       synchronize: true,

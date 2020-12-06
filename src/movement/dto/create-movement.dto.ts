@@ -1,8 +1,7 @@
 import { IsMongoId, IsNotEmpty, IsNumber, IsOptional } from "class-validator"
-import { ObjectID } from "typeorm"
 
 export class MovementCreateDto {
-    readonly id?: ObjectID
+    readonly id?: string
 
     @IsNotEmpty()
     @IsMongoId()

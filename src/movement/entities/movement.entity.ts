@@ -1,9 +1,9 @@
-import { Column, Entity, ObjectID, ObjectIdColumn } from "typeorm"
+import { Column, Entity, ObjectIdColumn } from "typeorm"
 
 @Entity({ name: 'movements' })
 export class Movement {
     @ObjectIdColumn()
-    id: ObjectID
+    id: string
 
     @ObjectIdColumn()
     userId: string

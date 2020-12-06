@@ -1,62 +1,69 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
-import { User } from './entities/user.entity'
+import { BadRequestException, Inject, Injectable } from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
 import { UserUpdateDto } from './dto/update-user.dto'
 import { UserCreateDto } from './dto/create-user.dto'
+import { Model } from 'mongoose'
+import { User } from './interfaces/user.interface'
 @Injectable()
 export class UserService {
 
     constructor(
-        @InjectRepository(User)
-        private userRepository: Repository<User>,
+        @Inject('USER_MODEL')
+        private userModel: Model<User>,
     ) { }
 
     async findAll(): Promise<User[]> {
-        const users = await this.userRepository.find()
-
-        return users
+        //TODO: filters and pagination
+        return this.userModel.find().exec()
     }
 
-    async create(createdUser: UserCreateDto): Promise<User> {
-        const hashedPassword = await bcrypt.hash(createdUser.password, 10)
+    async create(userData: UserCreateDto): Promise<User> {
+        const hashedPassword = await bcrypt.hash(userData.password, 10)
 
-        createdUser = {
-            ...createdUser,
+        //TODO: properly store and hide passwords
+        userData = {
+            ...userData,
             password: hashedPassword
         }
 
-        return await this.userRepository.save(createdUser)
+        const createdUser = await new this.userModel(userData).save()
+
+        return createdUser
     }
 
     async find(id: string): Promise<User> {
-        return await this.userRepository.findOne(id)
+        return await this.userModel.findById(id).exec()
     }
 
     async findByEmail(email: string): Promise<User> {
-        return await this.userRepository.findOne({ where: { email: email } })
+        return await this.userModel.findOne({ email: email }).exec()
     }
 
-    async update(id: string, updatedUser: UserUpdateDto): Promise<User> {
+    async update(id: string, userData: UserUpdateDto): Promise<User> {
+        if (userData.email) {
+            const existentUser = (await this.findByEmail(userData.email))?.toObject()
 
-        if (updatedUser.password) {
-            const hashedPassword = await bcrypt.hash(updatedUser.password, 10)
+            if (existentUser && existentUser._id != id) {
+                throw new BadRequestException({ statusCode: 400, message: ['E-mail already used'], error: 'Bad Request' })
+            }
+        }
 
-            updatedUser = {
-                ...updatedUser,
+        if (userData.password) {
+            const hashedPassword = await bcrypt.hash(userData.password, 10)
+
+            userData = {
+                ...userData,
                 password: hashedPassword
             }
         }
 
-        await this.userRepository.update(id, updatedUser)
-        return await this.userRepository.findOne(id)
+        if (await this.userModel.findOneAndUpdate({ _id: id }, userData)) {
+            return this.find(id)
+        }
     }
 
     async delete(id: string) {
-        const deleteAttempt = await this.userRepository.delete(id)
-
-        return deleteAttempt
+        return this.userModel.findByIdAndDelete(id).exec()
     }
 
 }

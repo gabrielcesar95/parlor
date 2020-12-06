@@ -3,11 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { MovementCreateDto } from './dto/create-movement.dto'
 import { Movement } from './entities/movement.entity'
-import { ObjectID } from "typeorm"
 
 @Injectable()
 export class MovementService {
-  // TODO priority one: implement mongoose 
   // TODO: Find a way to create a CURRENT_TIMESTAMP() equivalent on mongoDB
   // TODO: find a way to relate documents on mongoDB. In this case, movements and users
 
@@ -22,7 +20,7 @@ export class MovementService {
   }
 
   // TODO: see about getting the user with a decorator
-  async findAll(userId?: ObjectID): Promise<Movement[]> {
+  async findAll(userId?: string): Promise<Movement[]> {
     // TODO: get only the movements for the current authenticated user (@Request() req.user)
     const movements = await this.movementRepository.find()
 
