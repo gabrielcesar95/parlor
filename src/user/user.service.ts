@@ -20,7 +20,6 @@ export class UserService {
     async create(userData: UserCreateDto): Promise<User> {
         const hashedPassword = await bcrypt.hash(userData.password, 10)
 
-        //TODO: properly store and hide passwords
         userData = {
             ...userData,
             password: hashedPassword
@@ -32,11 +31,11 @@ export class UserService {
     }
 
     async find(id: string): Promise<User> {
-        return await this.userModel.findById(id).exec()
+        return (await this.userModel.findById(id))?.execPopulate()
     }
 
     async findByEmail(email: string): Promise<User> {
-        return await this.userModel.findOne({ email: email }).exec()
+        return (await this.userModel.findOne({ email: email }))?.execPopulate()
     }
 
     async update(id: string, userData: UserUpdateDto): Promise<User> {
@@ -63,7 +62,7 @@ export class UserService {
     }
 
     async delete(id: string) {
-        return this.userModel.findByIdAndDelete(id).exec()
+        return this.userModel.findOneAndDelete({ _id: id })
     }
 
 }

@@ -12,16 +12,10 @@ export class UserController {
     constructor(private userService: UserService) { }
 
     @Get()
-    async List(): Promise<any[]> {
+    async List(): Promise<User[]> {
         const users = await this.userService.findAll()
 
-        const response = users.map((user: User) => {
-            const { password, ...result } = user
-
-            return result
-        })
-
-        return response
+        return users
     }
 
     @Post()
@@ -36,24 +30,21 @@ export class UserController {
     }
 
     @Get(':id')
-    async Find(@Param('id', IdPipe) id: string): Promise<any> {
+    async Find(@Param('id', IdPipe) id: string): Promise<User> {
         const user = await this.userService.find(id)
 
         if (user) {
-            const { password, ...response } = user
-
-            return response
+            return user
         }
 
         throw new NotFoundException()
     }
 
     @Put(':id')
-    async Update(@Param('id', IdPipe) id: string, @Body() user: UserUpdateDto): Promise<any> {
+    async Update(@Param('id', IdPipe) id: string, @Body() user: UserUpdateDto): Promise<User> {
         if (await this.userService.find(id)) {
             const updatedUser = (await this.userService.update(id, user)).toObject()
 
-            const { password, ...response } = updatedUser
 
             return updatedUser
         }
