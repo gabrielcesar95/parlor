@@ -43,8 +43,7 @@ export class UserController {
     @Put(':id')
     async Update(@Param('id', IdPipe) id: string, @Body() user: UserUpdateDto): Promise<User> {
         if (await this.userService.find(id)) {
-            const updatedUser = (await this.userService.update(id, user)).toObject()
-
+            const updatedUser = (await this.userService.update(id, user))
 
             return updatedUser
         }
@@ -55,7 +54,11 @@ export class UserController {
     @Delete(':id')
     async Delete(@Param('id', IdPipe) id: string) {
         if (await this.userService.find(id)) {
-            return await this.userService.delete(id)
+            const deletedUser = await this.userService.delete(id)
+
+            return {
+                deletedUser
+            }
         }
 
         throw new NotFoundException()
