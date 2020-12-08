@@ -19,11 +19,7 @@ export class AuthController {
             throw new BadRequestException({ statusCode: 400, message: ['E-mail already used'], error: 'Bad Request' })
         }
 
-        const createdUser = await this.userService.create(user)
-
-        const { password, ...response } = createdUser
-
-        return response
+        return await this.userService.create(user)
     }
 
     @Public()

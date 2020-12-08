@@ -4,9 +4,7 @@ import { UserCreateDto } from './dto/create-user.dto'
 import { UserUpdateDto } from './dto/update-user.dto'
 import { User } from './interfaces/user.interface'
 import { UserService } from './user.service'
-import { Public } from '../decorators/public.decorator'
 
-@Public()
 @Controller('users')
 export class UserController {
     constructor(private userService: UserService) { }
