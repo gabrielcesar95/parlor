@@ -1,8 +1,7 @@
 import { Controller, Request, Get, Post, Body, Param, Delete } from '@nestjs/common'
 import { MovementService } from './movement.service'
 import { MovementCreateDto } from './dto/create-movement.dto'
-import { Movement } from './entities/movement.entity'
-
+import { Movement } from './interfaces/movement.interface'
 
 @Controller('movements')
 export class MovementController {

@@ -1,14 +1,17 @@
 import { Module } from '@nestjs/common'
+import { DatabaseModule } from '../database/database.module'
 import { MovementService } from './movement.service'
 import { MovementController } from './movement.controller'
-import { Movement } from './entities/movement.entity'
-import { TypeOrmModule } from '@nestjs/typeorm'
+import { MovementProviders } from './schemas/movement.schema'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Movement])
+    DatabaseModule
   ],
   controllers: [MovementController],
-  providers: [MovementService]
+  providers: [
+    MovementService,
+    ...MovementProviders
+  ]
 })
 export class MovementModule { }

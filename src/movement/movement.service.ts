@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { Inject, Injectable } from '@nestjs/common'
 import { MovementCreateDto } from './dto/create-movement.dto'
-import { Movement } from './entities/movement.entity'
+import { Model } from 'mongoose'
+import { Movement } from './interfaces/movement.interface'
 
 @Injectable()
 export class MovementService {
@@ -10,21 +9,22 @@ export class MovementService {
   // TODO: find a way to relate documents on mongoDB. In this case, movements and users
 
   constructor(
-    @InjectRepository(Movement)
-    private movementRepository: Repository<Movement>,
+    @Inject('MOVEMENT_MODEL')
+    private movementModel: Model<Movement>,
   ) { }
 
-  async create(createdMovement: MovementCreateDto): Promise<Movement> {
 
-    return await this.movementRepository.save(createdMovement)
+  async create(movementData: MovementCreateDto): Promise<Movement> {
+    const createdMovement = await new this.movementModel(movementData).save()
+
+    return createdMovement
   }
 
   // TODO: see about getting the user with a decorator
   async findAll(userId?: string): Promise<Movement[]> {
     // TODO: get only the movements for the current authenticated user (@Request() req.user)
-    const movements = await this.movementRepository.find()
 
-    return movements
+    return this.movementModel.find().exec()
   }
 
   findOne(id: number) {
