@@ -34,8 +34,8 @@ export class UserService {
         return (await this.userModel.findById(id))?.execPopulate()
     }
 
-    async findByEmail(email: string, password = false): Promise<User> {
-        return (await this.userModel.findOne({ email: email }).select(password ? 'password' : ''))?.execPopulate()
+    async findByEmail(email: string, getPassword = false): Promise<User> {
+        return (await this.userModel.findOne({ email: email }).select(getPassword ? '+password' : ''))?.execPopulate()
     }
 
     async update(id: string, userData: UserUpdateDto): Promise<User> {
