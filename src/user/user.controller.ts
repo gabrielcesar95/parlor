@@ -1,4 +1,5 @@
-import { BadRequestException, NotFoundException, Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
+import { BadRequestException, NotFoundException, Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common'
+import { AccessControlGuard } from '../auth/access-control.guard'
 import { IdPipe } from '../pipes/id.pipe'
 import { UserCreateDto } from './dto/create-user.dto'
 import { UserUpdateDto } from './dto/update-user.dto'
@@ -27,6 +28,7 @@ export class UserController {
         return createdUser
     }
 
+    @UseGuards(AccessControlGuard)
     @Get(':id')
     async Find(@Param('id', IdPipe) id: string): Promise<User> {
         const user = await this.userService.find(id)
